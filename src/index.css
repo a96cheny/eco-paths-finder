@@ -1,42 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* EcoTravel Design System - Nature-conscious colors and typography */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Nature-inspired color palette */
+    --background: 48 42% 98%;
+    --foreground: 156 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 156 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 156 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Forest Green */
+    --primary: 140 60% 25%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Sage Green */
+    --secondary: 120 15% 85%;
+    --secondary-foreground: 156 20% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Light Gray-Green */
+    --muted: 120 10% 95%;
+    --muted-foreground: 156 15% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Earth Brown */
+    --accent: 25 35% 75%;
+    --accent-foreground: 156 20% 15%;
+
+    /* Success: Eco Green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning: Nature Gold */
+    --warning: 45 93% 47%;
+    --warning-foreground: 156 20% 15%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 120 10% 90%;
+    --input: 120 10% 90%;
+    --ring: 140 60% 25%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-eco: linear-gradient(135deg, hsl(140 60% 25%), hsl(142 76% 36%));
+    --gradient-nature: linear-gradient(180deg, hsl(48 42% 98%), hsl(120 15% 85%));
+    --gradient-earth: linear-gradient(45deg, hsl(25 35% 75%), hsl(45 93% 47%));
+
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(140 60% 25% / 0.1);
+    --shadow-card: 0 4px 16px -4px hsl(140 60% 25% / 0.15);
+    --shadow-modal: 0 10px 40px -10px hsl(140 60% 25% / 0.25);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +126,50 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  /* EcoTravel specific component styles */
+  .eco-gradient {
+    background: var(--gradient-eco);
+  }
+  
+  .nature-gradient {
+    background: var(--gradient-nature);
+  }
+  
+  .earth-gradient {
+    background: var(--gradient-earth);
+  }
+  
+  .shadow-eco {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-eco-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-eco-modal {
+    box-shadow: var(--shadow-modal);
+  }
+  
+  .transition-eco {
+    transition: var(--transition-smooth);
+  }
+  
+  .certification-gold {
+    @apply bg-gradient-to-r from-yellow-400 to-amber-500 text-yellow-900;
+  }
+  
+  .certification-silver {
+    @apply bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800;
+  }
+  
+  .certification-green {
+    @apply bg-gradient-to-r from-emerald-400 to-green-500 text-emerald-900;
   }
 }
