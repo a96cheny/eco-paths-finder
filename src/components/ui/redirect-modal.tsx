@@ -8,6 +8,8 @@ interface RedirectModalProps {
   isOpen: boolean;
   onClose: () => void;
   hotel: {
+    id?: string;
+    tripadvisorId?: string;
     name: string;
     certification: string;
     price: number;
@@ -39,10 +41,14 @@ export function RedirectModal({ isOpen, onClose, hotel }: RedirectModalProps) {
           if (prev <= 1) {
             setIsRedirecting(true);
             clearInterval(timer);
-            // Simulate redirect to TripAdvisor
+            // Redirect to specific TripAdvisor hotel page
             setTimeout(() => {
               onClose();
-              window.open(`https://www.tripadvisor.com/Hotels-g187791-${hotel.name.replace(/\s+/g, '_')}-Hotels.html`, '_blank');
+              const hotelId = hotel.tripadvisorId || hotel.id;
+              const bookingUrl = hotelId 
+                ? `https://www.tripadvisor.com/Hotel_Review-d${hotelId}`
+                : `https://www.tripadvisor.com/Hotels-g187791-${hotel.name.replace(/\s+/g, '_')}-Hotels.html`;
+              window.open(bookingUrl, '_blank');
             }, 500);
             return 0;
           }
@@ -129,7 +135,11 @@ export function RedirectModal({ isOpen, onClose, hotel }: RedirectModalProps) {
             </Button>
             <Button
               onClick={() => {
-                window.open(`https://www.tripadvisor.com/Hotels-g187791-${hotel.name.replace(/\s+/g, '_')}-Hotels.html`, '_blank');
+                const hotelId = hotel.tripadvisorId || hotel.id;
+                const bookingUrl = hotelId 
+                  ? `https://www.tripadvisor.com/Hotel_Review-d${hotelId}`
+                  : `https://www.tripadvisor.com/Hotels-g187791-${hotel.name.replace(/\s+/g, '_')}-Hotels.html`;
+                window.open(bookingUrl, '_blank');
                 onClose();
               }}
               className="flex-1 eco-gradient text-white"

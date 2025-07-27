@@ -8,6 +8,9 @@ import { FilterSidebar } from "@/components/ui/filter-sidebar";
 import { RedirectModal } from "@/components/ui/redirect-modal";
 import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
+import { ApiConfig } from "@/components/ui/api-config";
+import { useHotelSearch } from "@/hooks/useHotelSearch";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock hotel data
 const mockHotels = [
@@ -47,39 +50,48 @@ const mockHotels = [
 ];
 
 export default function Home() {
-  const [searchResults, setSearchResults] = useState<typeof mockHotels>([]);
+  const { results, loading, error, searchHotels } = useHotelSearch();
+  const { toast } = useToast();
   const [showFilters, setShowFilters] = useState(false);
   const [redirectModal, setRedirectModal] = useState<{
     isOpen: boolean;
     hotel: any;
   }>({ isOpen: false, hotel: null });
   const [hasSearched, setHasSearched] = useState(false);
+  const [apiConfig, setApiConfig] = useState<any>(null);
 
-  const handleSearch = (searchData: any) => {
-    // Simulate API call
-    setTimeout(() => {
-      setSearchResults(mockHotels);
-      setHasSearched(true);
-    }, 1000);
+  const handleSearch = async (searchData: any) => {
+    if (!apiConfig) {
+      toast({
+        title: "API Configuration Required",
+        description: "Please configure your API keys first using the settings button.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setHasSearched(true);
+    await searchHotels(searchData);
   };
 
-  const handleFiltersChange = (filters: any) => {
-    // Apply filters to search results
-    let filtered = mockHotels;
-    
-    if (filters.certifications.length > 0) {
-      filtered = filtered.filter(hotel => 
-        filters.certifications.includes(hotel.certification)
-      );
+  const handleFiltersChange = async (filters: any) => {
+    if (hasSearched) {
+      // Re-search with filters applied
+      const lastSearch = {
+        destination: "Current Search", // You'd store this from the last search
+        checkIn: new Date().toISOString().split('T')[0],
+        checkOut: new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0]
+      };
+      await searchHotels(lastSearch, filters);
     }
-    
-    if (filters.priceRange) {
-      filtered = filtered.filter(hotel => 
-        hotel.price >= filters.priceRange[0] && hotel.price <= filters.priceRange[1]
-      );
-    }
-    
-    setSearchResults(filtered);
+  };
+
+  const handleApiConfigSave = (config: any) => {
+    setApiConfig(config);
+    toast({
+      title: "API Configuration Saved",
+      description: "Your API keys have been configured. You can now search for hotels.",
+    });
   };
 
   const handleBookClick = (hotel: any) => {
@@ -88,6 +100,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* API Configuration */}
+      <ApiConfig onConfigSave={handleApiConfigSave} />
+      
       {/* Header */}
       <Header />
       
@@ -103,7 +118,8 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-foreground">
-                Eco-Certified Hotels ({searchResults.length} found)
+                Eco-Certified Hotels ({results.length} found)
+                {loading && <span className="text-sm font-normal text-muted-foreground ml-2">Searching...</span>}
               </h2>
               <Button
                 variant="outline"
@@ -134,9 +150,23 @@ export default function Home() {
 
               {/* Results Grid */}
               <div className="flex-1">
-                {searchResults.length > 0 ? (
+                {error && (
+                  <div className="text-center py-16">
+                    <p className="text-xl text-destructive mb-2">Search Error</p>
+                    <p className="text-muted-foreground">{error}</p>
+                  </div>
+                )}
+                
+                {loading && (
+                  <div className="text-center py-16">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-muted-foreground">Searching certified eco-hotels...</p>
+                  </div>
+                )}
+                
+                {!loading && !error && results.length > 0 && (
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {searchResults.map((hotel) => (
+                    {results.map((hotel) => (
                       <HotelCard
                         key={hotel.id}
                         {...hotel}
@@ -144,13 +174,15 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                ) : (
+                )}
+                
+                {!loading && !error && hasSearched && results.length === 0 && (
                   <div className="text-center py-16">
                     <p className="text-xl text-muted-foreground">
-                      No hotels match your current filters.
+                      No certified eco-hotels found for your search.
                     </p>
                     <p className="text-muted-foreground mt-2">
-                      Try adjusting your criteria to see more results.
+                      Try adjusting your destination or dates, or check if your API keys are configured correctly.
                     </p>
                   </div>
                 )}
