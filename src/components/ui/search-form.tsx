@@ -28,17 +28,9 @@ export function SearchForm({ onSearch }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <Card className="w-full max-w-4xl shadow-eco-card">
-      <CardContent className="p-8">
+    <Card className="w-full max-w-4xl shadow-eco-modal bg-white/95 backdrop-blur-sm">
+      <CardContent className="p-6 md:p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-semibold text-foreground mb-2">
-              Find Eco-Certified Hotels
-            </h2>
-            <p className="text-muted-foreground">
-              Discover sustainable accommodations for conscious travelers
-            </p>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
@@ -98,7 +90,7 @@ export function SearchForm({ onSearch }: SearchFormProps) {
 
           <Button 
             type="submit" 
-            className="w-full h-12 text-lg eco-gradient text-white hover:opacity-90 transition-eco"
+            className="w-full h-14 text-lg font-semibold eco-gradient text-white hover:opacity-90 transition-eco rounded-xl shadow-eco-card"
           >
             <Search className="h-5 w-5 mr-2" />
             Search Hotels

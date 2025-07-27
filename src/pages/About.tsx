@@ -2,6 +2,8 @@ import { Leaf, Globe, Heart, Shield, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Header } from "@/components/ui/header";
+import { Footer } from "@/components/ui/footer";
 
 const features = [
   {
@@ -41,9 +43,11 @@ const values = [
 
 export default function About() {
   return (
-    <div className="min-h-screen nature-gradient">
+    <div className="min-h-screen bg-background">
+      <Header />
+      
       {/* Hero Section */}
-      <section className="py-16 px-4">
+      <section className="pt-32 pb-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl font-bold text-foreground mb-6">
             Why Eco Travel?
@@ -130,30 +134,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-4 border-t bg-card">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <Link to="/" className="text-muted-foreground hover:text-primary transition-eco">
-              Search
-            </Link>
-            <Link to="/about" className="text-muted-foreground hover:text-primary transition-eco">
-              About
-            </Link>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-eco">
-              FAQ
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-eco">
-              Contact
-            </a>
-          </div>
-          <div className="text-center mt-8 pt-8 border-t">
-            <p className="text-muted-foreground text-sm">
-              © 2024 EcoTravel by National Geographic. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

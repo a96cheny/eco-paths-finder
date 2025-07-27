@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/ui/header";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -31,16 +32,19 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen nature-gradient flex items-center justify-center px-4">
-      <Card className="w-full max-w-md shadow-eco-modal">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-foreground">
-            Admin Portal
-          </CardTitle>
-          <p className="text-muted-foreground">
-            Sign in to manage eco-certified hotels
-          </p>
-        </CardHeader>
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <div className="min-h-screen flex items-center justify-center px-4 -mt-16">
+        <Card className="w-full max-w-md shadow-eco-modal">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-foreground">
+              Admin Portal
+            </CardTitle>
+            <p className="text-muted-foreground">
+              Sign in to manage eco-certified hotels
+            </p>
+          </CardHeader>
         
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -107,7 +111,8 @@ export default function AdminLogin() {
             </p>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Filter } from "lucide-react";
-import { SearchForm } from "@/components/ui/search-form";
+import { Header } from "@/components/ui/header";
+import { HeroSection } from "@/components/ui/hero-section";
+import { WhyEcoTravel } from "@/components/ui/why-eco-travel";
 import { HotelCard } from "@/components/ui/hotel-card";
 import { FilterSidebar } from "@/components/ui/filter-sidebar";
 import { RedirectModal } from "@/components/ui/redirect-modal";
+import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-eco-travel.jpg";
 
 // Mock hotel data
 const mockHotels = [
@@ -85,36 +87,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen nature-gradient">
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <Header />
+      
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
-        
-        <div className="relative z-10 w-full max-w-6xl">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              EcoTravel
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-2">
-              by National Geographic
-            </p>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              Discover certified sustainable hotels that care for our planet
-            </p>
-          </div>
-          
-          <SearchForm onSearch={handleSearch} />
-        </div>
-      </section>
+      <HeroSection onSearch={handleSearch} />
+      
+      {/* Why Eco Travel Section */}
+      {!hasSearched && <WhyEcoTravel />}
 
       {/* Results Section */}
       {hasSearched && (
-        <section className="py-16 px-4">
+        <section className="py-16 px-4 bg-background">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-foreground">
@@ -150,7 +135,7 @@ export default function Home() {
               {/* Results Grid */}
               <div className="flex-1">
                 {searchResults.length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     {searchResults.map((hotel) => (
                       <HotelCard
                         key={hotel.id}
@@ -174,6 +159,9 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* Footer */}
+      <Footer />
 
       {/* Redirect Modal */}
       <RedirectModal
